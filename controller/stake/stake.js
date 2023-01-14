@@ -55,7 +55,7 @@ const stake = async (req, res, next) => {
     const stakeDuration = await contract.nftIdToDUration(nftResponse);
     //calculate duration from now
     const today = new Date();
-    const date = new Date();
+    const date = new Date(); 
 
     const stakedurStamp = new Date(
       date.setMonth(
