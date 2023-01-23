@@ -265,6 +265,8 @@ const getStakedCSV = async (req, res, next) => {
       return;
     }
 
+    
+
 
     const fields = [
       "_id",
@@ -286,10 +288,7 @@ const getStakedCSV = async (req, res, next) => {
     const csv = parser.parse(stake);
     res.type("text/csv").attachment("stake.csv").send(csv);
   } catch (error) {
-    if (error instanceof mongoose.CastError) {
-      next(createError(422, "Invalid user ID"));
-      return;
-    }
+
     next(createError(422, error.message));
   }
 };
