@@ -255,6 +255,45 @@ const getAllReturns = async (req, res, next) => {
   }
 };
 
+
+const getStakedCSV = async (req, res, next) => {
+  try {
+    const stake = await Stake.find();
+
+    if (stake.length < 1) {
+      next(createError(422, "No Stakes"));
+      return;
+    }
+
+
+    const fields = [
+      "_id",
+      "user",
+      "stakeId",
+      "tokenId",
+      "completed",
+      "address",
+      "stakeROI",
+      "stakeEnd",
+      "cost",
+      "live",
+      "lastPayment",
+      "date"
+    ];
+    const opts = { fields };
+
+    const parser = new Parser(opts);
+    const csv = parser.parse(stake);
+    res.type("text/csv").attachment("stake.csv").send(csv);
+  } catch (error) {
+    if (error instanceof mongoose.CastError) {
+      next(createError(422, "Invalid user ID"));
+      return;
+    }
+    next(createError(422, error.message));
+  }
+};
+
 module.exports = {
   stake,
   getStakesById,
@@ -262,4 +301,5 @@ module.exports = {
   returnNFT,
   getReturnsById,
   getAllReturns,
+  getStakedCSV
 };
