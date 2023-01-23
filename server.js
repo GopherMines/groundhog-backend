@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(
   cors({
     credentials: true,
-    origin: "https://www.gophermines.com",
+    //origin: "https://www.gophermines.com",
   })
 );
 const PORT = process.env.PORT || 3001;
