@@ -265,9 +265,20 @@ const getStakedCSV = async (req, res, next) => {
       return;
     }
 
-    const staked = {...stake}
-    staked.stakeEnd = new Date(stake.stakeEnd)
-    staked.cost = stake.cost / 10 ** 6
+    const csvUser = await new Promise((resolve, reject) => {
+      const arr = [];
+      stake.forEach((item, index) => {
+        const csvUser = {...item}
+        csvUser.stakeEnd = new Date(item.stakeEnd)
+    csvUser.cost = item.cost / 10 ** 6
+
+        arr.push(csvUser);
+
+        if (arr.length - 1 == index) {
+          resolve(arr);
+        }
+      });
+    });
 
     
 
@@ -289,7 +300,7 @@ const getStakedCSV = async (req, res, next) => {
     const opts = { fields };
 
     const parser = new Parser(opts);
-    const csv = parser.parse(staked);
+    const csv = parser.parse(csvUser);
     res.type("text/csv").attachment("stake.csv").send(csv);
   } catch (error) {
 
