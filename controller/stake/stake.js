@@ -265,6 +265,10 @@ const getStakedCSV = async (req, res, next) => {
       return;
     }
 
+    const staked = {...stake}
+    staked.stakeEnd = new Date(stake.stakeEnd)
+    staked.cost = stake.cost / 10 ** 6
+
     
 
 
@@ -285,7 +289,7 @@ const getStakedCSV = async (req, res, next) => {
     const opts = { fields };
 
     const parser = new Parser(opts);
-    const csv = parser.parse(stake);
+    const csv = parser.parse(staked);
     res.type("text/csv").attachment("stake.csv").send(csv);
   } catch (error) {
 
